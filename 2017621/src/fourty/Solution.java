@@ -1,31 +1,51 @@
 package fourty;
-/*
- * ÕÒ³öÊı×éÖĞÔªËØµÄºÍµÈÓÚÄ¿±êÊı×ÖµÄ
- * */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+/*
+ * è¿™æ˜¯ç»„åˆé—®é¢˜,ä¸”æ•°ç»„ä¸­æœ‰é‡å¤æ•°æ®ï¼Œä½†æ˜¯æ¯ä¸ªæ•°ç»„ä¸­çš„æ•°ä¸èƒ½å¤Ÿé‡å¤åˆ©ç”¨ï¼Œä¸èƒ½å‡ºç°é‡å¤çš„ç»„åˆã€‚
+ * å‡è®¾å€™é€‰å·ç ï¼ˆCï¼‰å’Œç›®æ ‡å·ç ï¼ˆTï¼‰çš„é›†åˆï¼Œæ‰¾åˆ°Cä¸­æ‰€æœ‰ç‹¬ç‰¹çš„ç»„åˆï¼Œå…¶ä¸­å€™é€‰å·ç ä¸Tç›¸åŠ ã€‚
+
+Cä¸­çš„æ¯ä¸ªæ•°å­—åªèƒ½åœ¨ç»„åˆä¸­ä½¿ç”¨ä¸€æ¬¡ã€‚
+
+æ³¨æ„ï¼š
+æ‰€æœ‰æ•°å­—ï¼ˆåŒ…æ‹¬ç›®æ ‡ï¼‰å°†ä¸ºæ­£æ•´æ•°ã€‚
+è§£å†³æ–¹æ¡ˆé›†ä¸èƒ½åŒ…å«é‡å¤çš„ç»„åˆã€‚
+ä¾‹å¦‚ï¼Œç»™å®šå€™é€‰é›†[10ï¼Œ1ï¼Œ2ï¼Œ7ï¼Œ6ï¼Œ1ï¼Œ5]å’Œç›®æ ‡8ï¼Œ
+è§£å†³æ–¹æ¡ˆæ˜¯ï¼š
+[
+Â Â  [1,7]
+Â Â  [1ï¼Œ2ï¼Œ5]
+Â Â  [2ï¼Œ6]
+Â Â  [1ï¼Œ1ï¼Œ6]
+]
+ * */
 public class Solution {
-        public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<List<Integer>>();
-      //ÏÈ¶ÔÊı×é½øĞĞÅÅĞò
         Arrays.sort(candidates);
-        getResult(result, candidates, new ArrayList<Integer>(), 0, target);
+       
+        combinationSum2(candidates, result, new ArrayList<Integer>(), 0, target-0);
         return result;
     }
+    private void combinationSum2(int[] candidates, List<List<Integer>> result, List<Integer> tempList, int start, int target)
+    {
+        if(target < 0)
+            return;
+        if(target == 0)
+        {
+            result.add(new ArrayList<Integer>(tempList));
+            return;
+        }
+        
+            for(int i = start; i < candidates.length; i++){
+                    if(i>start && candidates[i]==candidates[i-1])
+                        continue;//i > startä¿è¯è¿™ä¸ªåªæ˜¯å¤´éƒ¨çš„æ¯”è¾ƒï¼Œ
+                    tempList.add(candidates[i]);
+                    combinationSum2(candidates, result,tempList, i+1, target-candidates[i]);//æ˜¯i+1ä¸æ˜¯start+1,i+1ä¿è¯é‡å¤ä½¿ç”¨è¿‡çš„æ•°æ®
+                    tempList.remove(tempList.size()-1);
+                }
 
-	private void getResult(List<List<Integer>> result, int[] candidates, ArrayList<Integer> cur, int start,
-			int target) {
-		if(target > 0){ //Ö¤Ã÷»¹¿ÉÒÔ¼ÌĞøÔÚºóÃæÈ¡³öÊı¾İ
-			for(int i = start; i < candidates.length && target >= candidates[i];i++){
-			    if(i > start && candidates[i] == candidates[i-1]) continue;
-				cur.add(candidates[i]);//½«Õâ¸öÊı×ÖÌí¼Ó½øÈ¥£¬µ«ÊÇÏÖÔÚ»¹²»ÖªµÀÄÜ²»ÄÜÌí¼ÓÕâ¸öÊı×Ö£¬ÓÚÊÇÏÂÃæÕâ¸ö²½ÖèÒª¼ì²éÕıÈ·ĞÔ,¾ÍÊÇtargetµÄÖµ
-				getResult(result, candidates, cur, i+1, target-candidates[i]);//ÓÉÓÚÊı×Ö²»ÄÜÖØ¸´£¬ËùÒÔstart±ØĞë¼Ó1
-				cur.remove(cur.size()-1);
-			}
-		}else if( target == 0){
-			result.add(new ArrayList<Integer>(cur));
-			return;
-		}
-	}
+        }
 }
+
